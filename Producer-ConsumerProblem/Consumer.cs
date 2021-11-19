@@ -1,15 +1,15 @@
 ﻿using System;
 using System.Threading;
-using System.Threading.Tasks;
 
 namespace Producer_ConsumerProblem
 {
     class Consumer
     {
-        public void Consume(Buffer buf, int i)
+        public void Consume(ref Buffer buf, int i)
         {            
-            while (buf.s.CurrentCount < 1 && buf.e.CurrentCount < 1 && buf.f.CurrentCount > 0)
-                Thread.Sleep(1000);
+            while (buf.s.CurrentCount > 0 && buf.e.CurrentCount < 1 && buf.f.CurrentCount > 0)
+                Thread.Sleep(100);
+
             Console.WriteLine($"{i} Blocking process (consumer)");
             buf.s.Wait();
 

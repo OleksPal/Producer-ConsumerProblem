@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Threading;
-using System.Threading.Tasks;
 
 namespace Producer_ConsumerProblem
 {
     class Producer
     {
-        public void Produce(Buffer buf, int i)
+        public void Produce(ref Buffer buf, int i)
         {
             Random rand = new();
             Item item = new();
@@ -15,7 +14,8 @@ namespace Producer_ConsumerProblem
             Console.Write($"{i} Produced something: {item.Name} - {item.Price}");
 
             while (buf.s.CurrentCount > 0 && buf.e.CurrentCount > 0 && buf.f.CurrentCount < 1)
-                Thread.Sleep(1000);
+                Thread.Sleep(120);
+
             Console.WriteLine($"\n{i} Blocking process (producer)");
             buf.s.Wait();             
 
