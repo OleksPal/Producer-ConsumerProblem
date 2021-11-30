@@ -7,17 +7,19 @@ namespace SimpleThreadProject
     {
         static void Main(string[] args)
         {
+            Item a = new Item('a', 3);
+            Item b = new Item('b', 5);
             for (int i = 0; i < 5; i++)
             {
-                new Thread(() => PrintSymbols(3, 'a')).Start();
-                new Thread(() => PrintSymbols(5, 'b')).Start();
+                new Thread(() => PrintSymbols(a)).Start();
+                new Thread(() => PrintSymbols(b)).Start();
             }
         }
 
-        static void PrintSymbols(int number, char symbol)
+        static void PrintSymbols(Item item)
         {
-            for (int i = 0; i < number; i++)
-                Console.Write(symbol);
+            for (int i = 0; i < item.Number; i++)
+                Console.Write(item.Name);
         }
     }
 }
