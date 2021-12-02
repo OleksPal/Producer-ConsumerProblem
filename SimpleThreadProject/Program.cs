@@ -5,21 +5,25 @@ namespace SimpleThreadProject
 {
     class Program
     {
+        static volatile bool indicator = true;
         static void Main(string[] args)
         {
-            Item a = new Item('a', 3);
-            Item b = new Item('b', 5);
-            for (int i = 0; i < 5; i++)
-            {
-                new Thread(() => PrintSymbols(a)).Start();
-                new Thread(() => PrintSymbols(b)).Start();
-            }
+            Item a = new Item('a', 8000);
+
+            new Thread(() => PrintSymbols(a)).Start();
+            new Thread(() => SleepingThread()).Start();
         }
 
         static void PrintSymbols(Item item)
         {
-            for (int i = 0; i < item.Number; i++)
+            while (indicator)
                 Console.Write(item.Name);
+        }
+
+        static void SleepingThread()
+        {
+            Thread.Sleep(2000);
+            indicator = false;
         }
     }
 }
