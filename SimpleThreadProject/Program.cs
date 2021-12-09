@@ -22,7 +22,7 @@ namespace SimpleThreadProject
 
         static void SleepingThread()
         {
-            Thread.Sleep(2000);
+            Thread.Sleep(200);
             indicator = false;
         }
     }

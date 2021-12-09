@@ -5,31 +5,31 @@ namespace Producer_ConsumerProblem
 {
     class Producer
     {
-        public void Produce(ref Buffer buf, int i)
+        public void Produce(Buffer buf, int i)
         {
             Random rand = new();
             Item item = new();
             item.Name = $"ItemName{i}";
             item.Price = rand.Next(1, 10);
-            Console.Write($"{i} Produced something: {item.Name} - {item.Price}");
+            Console.WriteLine($"\n{i} Produced something: {item.Name} - {item.Price}");
 
-            while (buf.s.CurrentCount > 0 && buf.e.CurrentCount > 0 && buf.f.CurrentCount < 1)
-                Thread.Sleep(120);
+            while (buf.s.CurrentCount < 1 || buf.e.CurrentCount < 1 || buf.f.CurrentCount > 0)
+                Thread.Sleep(100);
 
+            buf.s.Wait();
             Console.WriteLine($"\n{i} Blocking process (producer)");
-            buf.s.Wait();             
 
-            Console.WriteLine($"{i} Decrease the value of the empty space in the buffer (producer)");
             buf.e.Wait();
+            Console.WriteLine($"\n{i} Decrease the value of the empty space in the buffer (producer)");
 
-            Console.WriteLine($"{i} Appending the newly produced data in the buffer (producer)");
             buf.item = item;
+            Console.WriteLine($"\n{i} Appending the newly produced data in the buffer (producer)");
 
-            Console.WriteLine($"{i} Marking buffer as full (producer)");
             buf.f.Release();
+            Console.WriteLine($"\n{i} Marking buffer as full (producer)");
 
-            Console.WriteLine($"{i} Releasing process (producer)");
-            buf.s.Release();
+            Console.WriteLine($"\n{i} Releasing process (producer)");
+            buf.s.Release();                       
         }
     }
 }

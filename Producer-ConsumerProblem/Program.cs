@@ -4,33 +4,16 @@ namespace Producer_ConsumerProblem
 {
     class Program
     {
-        static Buffer buf;
+        static volatile Buffer buf = new(new Item());
         static void Main(string[] args)
         {
-            buf = new(new Item());
-            for (int i = 0; i < 5; i++)
-            {
-                Producer producer = new();
-                new Thread(() => producer.Produce(ref buf, i)).Start();
+            Consumer consumer = new();
+            Producer producer = new();
 
-                //Thread thread1 = new Thread(new ParameterizedThreadStart(producer.Produce));
-                //thread1.Start(new InputThreadParameters(ref buf, i));
-
-                Consumer consumer = new();
-                new Thread(() => consumer.Consume(ref buf, i)).Start();
-            }
+            new Thread(() => consumer.Consume(buf, 1)).Start();
+            new Thread(() => consumer.Consume(buf, 2)).Start();
+            new Thread(() => producer.Produce(buf, 1)).Start();
+            new Thread(() => producer.Produce(buf, 2)).Start();
         }
     }
-
-    //class InputThreadParameters
-    //{        
-    //    Buffer buf;
-    //    int i;
-
-    //    public InputThreadParameters(ref Buffer buf, int i)
-    //    {
-    //        this.buf = buf;
-    //        this.i = i;
-    //    }
-    //}
 }
