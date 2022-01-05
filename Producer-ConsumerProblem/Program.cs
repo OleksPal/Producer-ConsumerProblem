@@ -10,10 +10,11 @@ namespace Producer_ConsumerProblem
             Consumer consumer = new();
             Producer producer = new();
 
-            new Thread(() => consumer.Consume(buf, 1)).Start();
-            new Thread(() => consumer.Consume(buf, 2)).Start();
-            new Thread(() => producer.Produce(buf, 1)).Start();
-            new Thread(() => producer.Produce(buf, 2)).Start();
+            for (int i = 0; i < 5; i++) 
+            {
+                new Thread(() => consumer.Consume(buf, i)).Start();
+                new Thread(() => producer.Produce(buf, i)).Start();
+            }
         }
     }
 }
